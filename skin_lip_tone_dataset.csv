@@ -1,0 +1,26 @@
+image_filename,skin_tone_label,lip_color_label,skin_l_avg,skin_a_avg,skin_b_avg,lip_l_avg,lip_a_avg,lip_b_avg
+face_001.jpg,Fair,Natural Pink,70.5,5.2,10.1,55.3,20.5,15.8
+face_002.jpg,Medium,Rosy Red,60.2,10.8,15.5,48.1,25.3,18.2
+face_003.jpg,Dark,Brownish,45.8,8.1,12.0,38.9,18.7,10.4
+face_004.jpg,Olive,Pale Nude,58.7,3.5,8.9,45.0,15.1,12.7
+face_005.jpg,Light,Natural Pink,65.1,6.0,12.3,52.0,22.0,16.0
+face_006.jpg,Fair,Vibrant Red,72.1,6.5,11.5,58.0,30.1,20.0
+face_007.jpg,Medium,Subtle Peach,59.5,12.0,16.0,47.5,18.0,22.5
+face_008.jpg,Dark,Deep Plum,43.2,7.0,10.5,35.0,15.0,8.0
+face_009.jpg,Olive,Soft Coral,57.0,4.0,9.5,43.0,17.5,20.0
+face_010.jpg,Light,Bright Pink,68.0,7.0,14.0,54.0,28.0,19.0
+face_011.jpg,Fair,Nude Beige,71.0,4.8,9.8,50.0,12.0,10.5
+face_012.jpg,Medium,Terracotta,58.0,11.5,14.5,45.0,23.0,17.0
+face_013.jpg,Dark,Berry Tone,44.5,7.5,11.0,37.0,16.5,9.0
+face_014.jpg,Olive,Warm Brown,56.5,3.0,8.5,42.0,13.0,11.0
+face_015.jpg,Light,Coral Pink,66.0,6.8,13.5,53.0,24.0,21.0
+face_016.jpg,Fair,Cool Pink,69.0,4.5,8.0,54.0,18.0,13.0
+face_017.jpg,Medium,Mauve,57.5,9.5,13.0,46.0,20.0,14.5
+face_018.jpg,Dark,Chocolate,42.0,6.5,9.5,36.0,14.0,7.0
+face_019.jpg,Olive,Russet,55.0,2.8,7.5,41.0,11.0,9.0
+face_020.jpg,Light,Red Orange,67.0,7.5,15.0,53.5,26.0,23.0
+face_021.jpg,Fair,Peachy Nude,70.0,5.5,11.0,51.0,15.5,16.0
+face_022.jpg,Medium,Wine Red,59.0,10.0,14.0,47.0,27.0,15.0
+face_023.jpg,Dark,Burgundy,43.0,7.8,10.0,36.5,17.0,8.5
+face_024.jpg,Olive,Rose Brown,56.0,3.2,9.0,44.0,14.0,10.0
+face_025.jpg,Light,Fuchsia,66.5,7.2,14.5,54.5,29.0,20.5

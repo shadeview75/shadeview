@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shade View App{% endblock %}</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles for the body to use Inter font and light background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* A very light gray background */
+            color: #374151; /* Default dark gray text color */
+        }
+        /* Flash message styling for consistency across pages */
+        .flash {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border-radius: 0.375rem; /* rounded-md in Tailwind */
+            text-align: center;
+            font-weight: 500; /* font-medium in Tailwind */
+            border: 1px solid transparent; /* Default transparent border */
+        }
+        .flash.success {
+            background-color: #d4edda; /* bg-green-100 */
+            color: #155724; /* text-green-800 */
+            border-color: #c3e6cb; /* border-green-200 */
+        }
+        .flash.error, .flash.danger { /* Combined error and danger for consistency */
+            background-color: #f8d7da; /* bg-red-100 */
+            color: #721c24; /* text-red-800 */
+            border-color: #f5c6cb; /* border-red-200 */
+        }
+        .flash.info {
+            background-color: #d1ecf1; /* bg-blue-100 */
+            color: #0c5460; /* text-blue-800 */
+            border-color: #bee5eb; /* border-blue-200 */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+    <!-- Main content wrapper. For dashboard, this will be centered. -->
+    <div class="w-full max-w-4xl bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+        <!-- Flash messages displayed at the top of the content block -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- This is where the content of child templates (like dashboard.html, login.html) will go -->
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

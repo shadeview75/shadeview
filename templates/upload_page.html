@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+
+{% block title %}Upload Tooth Image for {{ patient_name }}{% endblock %}
+
+{% block content %}
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl sm:text-4xl font-bold text-indigo-700">Upload Image for {{ patient_name }} (OP: {{ op_number }})</h1>
+        <a href="{{ url_for('dashboard') }}" class="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition ease-in-out duration-150">
+            Back to Dashboard
+        </a>
+    </div>
+
+    {# Flash messages are handled in layout.html #}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Image Upload Form -->
+        <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Upload Tooth Photo</h2>
+            <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <!-- Hidden fields for patient context -->
+                <input type="hidden" name="op_number" value="{{ op_number }}">
+                <input type="hidden" name="patient_name" value="{{ patient_name }}">
+
+                <div>
+                    <label for="file" class="block text-sm font-medium text-gray-700 mb-2">Select Image File:</label>
+                    <input type="file" id="file" name="file" accept="image/*" required
+                           class="block w-full text-sm text-gray-500
+                                 file:mr-4 file:py-2 file:px-4
+                                 file:rounded-full file:border-0
+                                 file:text-sm file:font-semibold
+                                 file:bg-indigo-50 file:text-indigo-700
+                                 hover:file:bg-indigo-100 transition ease-in-out duration-150">
+                </div>
+
+                {# NEW: Simulated Device/Lighting Profile Selection #}
+                <div>
+                    <label for="device_profile" class="block text-sm font-medium text-gray-700 mb-2">Simulate Device/Lighting:</label>
+                    <select id="device_profile" name="device_profile"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="ideal">Ideal Conditions (Reference)</option>
+                        <option value="iphone_warm">iPhone (Slightly Warm)</option>
+                        <option value="android_cool">Android (Slightly Cool)</option>
+                        <option value="poor_lighting">Poor Lighting (Dim/Yellow)</option>
+                    </select>
+                </div>
+
+                {# NEW: Simulated Color Reference Tab Selection #}
+                <div>
+                    <label for="reference_tab" class="block text-sm font-medium text-gray-700 mb-2">Simulate Color Reference in Image:</label>
+                    <select id="reference_tab" name="reference_tab"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="neutral_gray">Neutral Gray Card</option>
+                        <option value="vita_a2">VITA A2 Tab</option>
+                        <option value="vita_b1">VITA B1 Tab</option>
+                    </select>
+                </div>
+
+                <button type="submit"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-150">
+                    Process Image & Generate Report
+                </button>
+            </form>
+        </div>
+
+        <!-- Advanced Photo Capture Instructions & Simulated Real-time Validation -->
+        <div class="bg-blue-50 p-6 rounded-lg shadow-md border border-blue-200">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4">📸 Advanced Photo Capture Guide</h2>
+            <ul class="list-disc list-inside text-blue-700 space-y-3 text-lg">
+                <li><strong class="font-medium">✅ Fixed Camera Settings:</strong> White Balance (5500K), ISO (100-200), Exposure (Locked). Auto-filters/flash are disabled by the app.</li>
+                <li><strong class="font-medium">✅ Standardized Lighting:</strong> Use an external daylight-balanced ring light (5500K, CRI >90) or natural indirect daylight. Avoid phone flash.</li>
+                <li><strong class="font-medium">✅ Include Color Reference:</strong> A neutral gray card or a known VITA shade tab (e.g., A2, B1) MUST be visible next to the tooth in the photo.</li>
+                <li><strong class="font-medium">✅ Dry the tooth surface:</strong> Saliva and moisture cause reflections.</li>
+                <li><strong class="font-medium">✅ Isolate Tooth:</strong> Ensure only the tooth of interest fills the frame (no lips or gums).</li>
+                <li><strong class="font-medium">✅ Consistent Distance:</strong> Maintain 15–20 cm from tooth for consistent scale.</li>
+            </ul>
+            <p class="mt-6 text-blue-600 italic text-sm">
+                In a real mobile application, these settings would be automatically locked, and real-time on-screen guidance would help you position correctly and ensure the color reference is present.
+            </p>
+
+            <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">
+                <strong class="font-medium">💡 Simulated Real-time Validation:</strong>
+                <p id="validation-message">
+                    <!-- This message will change based on the selected device_profile and reference_tab -->
+                    Select a "Simulate Device/Lighting" and "Simulate Color Reference" profile above to see how a real app would guide you.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to dynamically update the simulated validation message
+        document.addEventListener('DOMContentLoaded', function() {
+            const deviceProfileSelect = document.getElementById('device_profile');
+            const referenceTabSelect = document.getElementById('reference_tab');
+            const validationMessage = document.getElementById('validation-message');
+
+            function updateValidationMessage() {
+                const selectedProfile = deviceProfileSelect.value;
+                const selectedReference = referenceTabSelect.value;
+                let message = "";
+
+                switch (selectedProfile) {
+                    case "ideal":
+                        message = "Excellent! Ideal capture conditions simulated. High accuracy expected with " + selectedReference.replace("_", " ").toLowerCase() + " reference.";
+                        break;
+                    case "iphone_warm":
+                        message = "iPhone detected. Applying reference-based color normalization. Image looks slightly warm; correction applied using " + selectedReference.replace("_", " ").toLowerCase() + ".";
+                        break;
+                    case "android_cool":
+                        message = "Android detected. Applying reference-based color normalization. Image looks slightly cool; correction applied using " + selectedReference.replace("_", " ").toLowerCase() + ".";
+                        break;
+                    case "poor_lighting":
+                        message = "Warning: Lighting suboptimal (dim/yellowish). Applying reference-based color normalization using " + selectedReference.replace("_", " ").toLowerCase() + ". Accuracy may still be impacted. Move to better light if possible.";
+                        break;
+                    default:
+                        message = "Select a 'Simulate Device/Lighting' and 'Simulate Color Reference' profile above to see how a real app would guide you.";
+                }
+                validationMessage.textContent = message;
+            }
+
+            // Update message on page load
+            updateValidationMessage();
+
+            // Update message when selections change
+            deviceProfileSelect.addEventListener('change', updateValidationMessage);
+            referenceTabSelect.addEventListener('change', updateValidationMessage);
+        });
+    </script>
+{% endblock %}

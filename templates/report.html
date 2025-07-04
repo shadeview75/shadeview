@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shade Analysis Report - {{ patient_name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .flash {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash.error, .flash.danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8 bg-gray-100 text-gray-800">
+    <div class="max-w-4xl w-full bg-white shadow-lg rounded-xl p-6 sm:p-8 lg:p-10 mb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-indigo-700 mb-6 text-center">Tooth Shade Analysis Report</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="mb-6 border-b pb-4 border-gray-200">
+            <p class="text-lg text-gray-700 mb-2"><strong class="font-medium">Patient Name:</strong> {{ patient_name }}</p>
+            <p class="text-lg text-gray-700"><strong class="font-medium">Analysis Date:</strong> {{ analysis_date }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Detected Shades (L-value Rule-based / ML) -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Detected Shades (L-value & ML)</h2>
+                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                    <li><strong class="font-medium">Overall AI Prediction (ML):</strong> {{ shades.overall_ml_shade }}</li>
+                    <li><strong class="font-medium">Incisal Zone (Rule-based):</strong> {{ shades.incisal }}</li>
+                    <li><strong class="font-medium">Middle Zone (Rule-based):</strong> {{ shades.middle }}</li>
+                    <li><strong class="font-medium">Cervical Zone (Rule-based):</strong> {{ shades.cervical }}</li>
+                </ul>
+            </div>
+
+            <!-- Delta E 2000 Matched Shades -->
+            <div class="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Delta E 2000 Matched Shades</h2>
+                {% if shades.delta_e_matched_shades %}
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li><strong class="font-medium">Overall Match:</strong> {{ shades.delta_e_matched_shades.overall }} (dE: {{ "%.2f"|format(shades.delta_e_matched_shades.overall_delta_e) }})</li>
+                        <li><strong class="font-medium">Incisal Match:</strong> {{ shades.delta_e_matched_shades.incisal }} (dE: {{ "%.2f"|format(shades.delta_e_matched_shades.incisal_delta_e) }})</li>
+                        <li><strong class="font-medium">Middle Match:</strong> {{ shades.delta_e_matched_shades.middle }} (dE: {{ "%.2f"|format(shades.delta_e_matched_shades.middle_delta_e) }})</li>
+                        <li><strong class="font-medium">Cervical Match:</strong> {{ shades.delta_e_matched_shades.cervical }} (dE: {{ "%.2f"|format(shades.delta_e_matched_shades.cervical_delta_e) }})</li>
+                    </ul>
+                {% else %}
+                    <p class="text-gray-600">Delta E matching data not available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Shade Detection Accuracy Confidence (NEW) -->
+        <div class="bg-blue-50 p-6 rounded-lg shadow-md border border-blue-200 mb-8">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4 text-center">Shade Detection Accuracy Confidence</h2>
+            {% if shades.accuracy_confidence and shades.accuracy_confidence.overall_percentage != "N/A" %}
+                <p class="text-blue-700 text-lg text-center"><strong class="font-medium">Overall Confidence:</strong> {{ shades.accuracy_confidence.overall_percentage }}%</p>
+                <p class="text-blue-600 text-sm italic text-center mt-2">{{ shades.accuracy_confidence.notes }}</p>
+            {% else %}
+                <p class="text-gray-600 text-center">Confidence data not available due to processing errors or lack of data.</p>
+            {% endif %}
+        </div>
+
+
+        <!-- Advanced AI Insights -->
+        <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Advanced AI Insights (Simulated)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {% if shades.tooth_analysis %}
+                <div>
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Tooth Analysis</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <li><strong class="font-medium">Simulated Overall Shade (Detailed):</strong> {{ shades.tooth_analysis.simulated_overall_shade }}</li>
+                        <li><strong class="font-medium">Simulated Condition:</strong> {{ shades.tooth_analysis.tooth_condition }}</li>
+                        <li><strong class="font-medium">Simulated Stain Presence:</strong> {{ shades.tooth_analysis.stain_presence }}</li>
+                        <li><strong class="font-medium">Simulated Decay Presence:</strong> {{ shades.tooth_analysis.decay_presence }}</li>
+                        {% if shades.tooth_analysis.overall_lab %}
+                            <li><strong class="font-medium">Simulated Overall LAB:</strong> L={{ "%.2f"|format(shades.tooth_analysis.overall_lab.L) }}, a={{ "%.2f"|format(shades.tooth_analysis.overall_lab.a) }}, b={{ "%.2f"|format(shades.tooth_analysis.overall_lab.b) }}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if shades.face_features %}
+                <div>
+                    <h3 class="text-xl font-medium text-gray-800 mb-2">Facial Aesthetics Analysis</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                        <li><strong class="font-medium">Simulated Skin Tone:</strong> {{ shades.face_features.skin_tone }}</li>
+                        <li><strong class="font-medium">Simulated Lip Color:</strong> {{ shades.face_features.lip_color }}</li>
+                        <li><strong class="font-medium">Simulated Eye Contrast:</strong> {{ shades.face_features.eye_contrast }}</li>
+                        <li><strong class="font-medium">Simulated Facial Harmony Score:</strong> {{ "%.2f"|format(shades.face_features.facial_harmony_score) }}</li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% if shades.aesthetic_suggestion %}
+            <div class="mt-8">
+                <h3 class="text-xl font-medium text-gray-800 mb-2 text-center">Aesthetic Shade Suggestion</h3>
+                <ul class="list-disc list-inside text-gray-700 space-y-1 text-sm mx-auto max-w-lg">
+                    <li><strong class="font-medium">Suggested Shade:</strong> {{ shades.aesthetic_suggestion.suggested_aesthetic_shade }}</li>
+                    <li><strong class="font-medium">Confidence:</strong> {{ shades.aesthetic_suggestion.aesthetic_confidence }}</li>
+                    <li><strong class="font-medium">Notes:</strong> {{ shades.aesthetic_suggestion.recommendation_notes }}</li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Display Uploaded Image (if available) -->
+        {% if image_filename %}
+        <div class="mt-8 mb-8 text-center">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Uploaded Image</h2>
+            <img src="{{ url_for('uploaded_file', filename=image_filename) }}" alt="Uploaded Tooth Image"
+                 class="max-w-full h-auto rounded-lg shadow-md mx-auto">
+        </div>
+        {% else %}
+        <p class="text-center text-gray-600 mt-8">No image available for display.</p>
+        {% endif %}
+
+        <!-- Download Report Button -->
+        <div class="mt-8 text-center">
+            <a href="{{ url_for('download_report', filename=report_filename) }}"
+               class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition ease-in-out duration-150">
+                Download PDF Report
+                <svg class="ml-3 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+
+        <div class="mt-4 text-center">
+            <a href="{{ url_for('dashboard') }}" class="text-indigo-600 hover:text-indigo-500 text-sm font-medium">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

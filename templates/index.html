@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shade View - Accurate Tooth Shade Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <span class="logo">SHADE VIEW</span>
+        <nav>
+            <a href="{{ url_for('login') }}" aria-label="Login to your account">Login</a>
+            <a href="{{ url_for('register') }}" aria-label="Register a new account">Register</a>
+        </nav>
+    </header>
+
+    <main> 
+        <div class="container">
+            <h1 class="hero-title">Precision Tooth Shade Analysis, Instantly.</h1>
+            <p class="hero-subtitle">Harness AI to achieve <strong>accurate and consistent tooth shade matching</strong>. Enhance patient satisfaction and optimize restorative dentistry outcomes with Shade View.</p>
+
+            <section class="workflow-section">
+                <h2>Our Simple Workflow:</h2>
+                <div class="workflow-container">
+
+                    <div class="workflow-step">
+                        <div class="icon-circle">
+                            <i class="fas fa-user" aria-hidden="true"></i> 
+                        </div>
+                        <h3>1. Enter Patient Details</h3>
+                        <p>Quickly record patient information.</p>
+                    </div>
+
+                    <div class="next-step-arrow">
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="icon-circle">
+                            <i class="fas fa-camera" aria-hidden="true"></i>
+                        </div>
+                        <h3>2. Upload Image</h3>
+                        <p>Capture and upload a clear tooth image.</p>
+                    </div>
+
+                    <div class="next-step-arrow">
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="icon-circle">
+                            <i class="fas fa-robot" aria-hidden="true"></i>
+                        </div>
+                        <h3>3. AI Analysis</h3>
+                        <p>Intelligent system analyzes shade zones.</p>
+                    </div>
+
+                    <div class="next-step-arrow">
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="workflow-step">
+                        <div class="icon-circle">
+                            <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                        </div>
+                        <h3>4. Generate Report</h3>
+                        <p>Receive a detailed, printable PDF report.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>Why Choose Shade View?</h2>
+                <ul class="feature-list">
+                    <li><strong>Automated Accuracy:</strong> AI-powered shade detection.</li>
+                    <li><strong>Detailed Reports:</strong> Comprehensive, printable PDFs.</li>
+                    <li><strong>Secure Data:</strong> Protected patient information.</li>
+                    <li><strong>User-Friendly:</strong> Intuitive interface for all professionals.</li>
+                    <li><strong>Efficient Workflow:</strong> Seamless integration into your practice.</li>
+                </ul>
+            </section>
+
+            <section class="quote-section">
+                <p class="quote">
+                    "Shade View has significantly improved our shade matching accuracy and efficiency. It's an indispensable tool for our clinic."
+                </p>
+                <p class="quote-author">- Dr. Anya Sharma, Lead Dentist</p>
+            </section>
+
+            <section class="call-to-action">
+                <h2>Ready to Enhance Your Practice?</h2>
+                <a href="{{ url_for('register') }}" class="button primary" role="button">Register Free</a>
+                <a href="{{ url_for('login') }}" class="button secondary" role="button">Existing User? Login</a>
+            </section>
+
+            <section class="contact-info">
+                <h3 class="contact">Need Assistance?</h3>
+                <p>Email: <a href="mailto:support@shadeview.com">support@shadeview.com</a></p>
+                <p>Phone: +91 98765 43210</p>
+            </section>
+        </div>
+    </main> 
+    <footer>
+        <p>&copy; 2025 Shade View. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
